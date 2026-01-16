@@ -1,8 +1,9 @@
 package org.example;
 
-import org.example.entities.Product;
-import org.example.entities.Order;
 import org.example.entities.Customer;
+import org.example.entities.Order;
+import org.example.entities.Product;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +25,34 @@ public class Application {
         productList.add(new Product(6, "La Ragazza con il Tatuaggio del Drago", "Book", 90.00));
         productList.add(new Product(7, "Il Gioco delle Ombre", "Book", 85.00));
         productList.add(new Product(8, "La Storia Infinita", "Book", 100.00));
-        productList.add(new Product( 9, "Passeggino Leggero", "Baby", 65.00 ));
-        productList.add(new Product( 10, "Giocattolo di Pelso", "Baby", 70.00 ));
-        productList.add(new Product( 11, "Set di Vestiti per Neonato", "Baby", 80.00 ));
-        productList.add(new Product( 12, "Letto per Bambino", "Baby", 75.00 ));
-        productList.add(new Product( 13, "Carrozzina per Bambino", "Baby", 120.00 ));
-        productList.add(new Product( 14, "Kit di Accessori per Allattamento", "Baby", 90.00 ));
-        productList.add(new Product( 15, "Giocattolo Interattivo", "Baby", 85.00 ));
-        productList.add(new Product( 16, "Tappeto per Giochi", "Baby", 100.00 ));
-        productList.add(new Product(  17, "Maglietta con Stampa di Supereroe", "Boy", 65.00 ));
-        productList.add(new Product( 18, "Set di Costruzione LEGO", "Boy", 70.00 ));
-        productList.add(new Product( 19, "Pantaloni di Jeans per Bambino", "Boy", 80.00 ));
-        productList.add(new Product( 20, "Giocattolo di Macchinina", "Boy", 75.00 ));
-        productList.add(new Product( 21, "Kit di Accessori per la Scuola", "Boy", 120.00 ));
-        productList.add(new Product( 22, "Felpa con Cappuccio", "Boy", 90.00 ));
-        productList.add(new Product( 23, "Scarpe da Ginnastica", "Boy", 85.00 ));
-        productList.add(new Product( 24, "Set di Pennarelli Colorati", "Boy", 100.00 ));
+        productList.add(new Product(9, "Passeggino Leggero", "Baby", 65.00));
+        productList.add(new Product(10, "Giocattolo di Pelso", "Baby", 70.00));
+        productList.add(new Product(11, "Set di Vestiti per Neonato", "Baby", 80.00));
+        productList.add(new Product(12, "Letto per Bambino", "Baby", 75.00));
+        productList.add(new Product(13, "Carrozzina per Bambino", "Baby", 120.00));
+        productList.add(new Product(14, "Kit di Accessori per Allattamento", "Baby", 90.00));
+        productList.add(new Product(15, "Giocattolo Interattivo", "Baby", 85.00));
+        productList.add(new Product(16, "Tappeto per Giochi", "Baby", 100.00));
+        productList.add(new Product(17, "Maglietta con Stampa di Supereroe", "Boy", 65.00));
+        productList.add(new Product(18, "Set di Costruzione LEGO", "Boy", 70.00));
+        productList.add(new Product(19, "Pantaloni di Jeans per Bambino", "Boy", 80.00));
+        productList.add(new Product(20, "Giocattolo di Macchinina", "Boy", 75.00));
+        productList.add(new Product(21, "Kit di Accessori per la Scuola", "Boy", 120.00));
+        productList.add(new Product(22, "Felpa con Cappuccio", "Boy", 90.00));
+        productList.add(new Product(23, "Scarpe da Ginnastica", "Boy", 85.00));
+        productList.add(new Product(24, "Set di Pennarelli Colorati", "Boy", 100.00));
+
         //LISTA DI CLIENTI
         List<Customer> customerList = new ArrayList<>();
+
         Customer customer1 = new Customer(1, "Luca Rossi", 2);
         Customer customer2 = new Customer(2, "Giulia Bianchi", 1);
         Customer customer3 = new Customer(3, "Marco Verdi", 3);
-        Customer customer4 = new Customer( 4, "Francesca Neri", 1 );
-        Customer customer5 = new Customer( 5, "Andrea Marini", 2 );
-        Customer customer6 = new Customer( 6, "Sofia Conti", 3 );
-        Customer customer7 = new Customer( 7, "Lorenzo Ferrari", 2 );
-        Customer customer8 = new Customer( 8, "Elena Ricci", 1 );
+        Customer customer4 = new Customer(4, "Francesca Neri", 1);
+        Customer customer5 = new Customer(5, "Andrea Marini", 2);
+        Customer customer6 = new Customer(6, "Sofia Conti", 3);
+        Customer customer7 = new Customer(7, "Lorenzo Ferrari", 2);
+        Customer customer8 = new Customer(8, "Elena Ricci", 1);
 
         customerList.add(customer1);
         customerList.add(customer2);
@@ -71,9 +74,14 @@ public class Application {
 
         Map<Customer, List<Order>> ordineCliente = orderList.stream().collect(Collectors.groupingBy(c -> c.getCustomer()));
 
-        Map<Customer, Double> sommaOrdiniCliente = orderList.stream().collect(Collectors.groupingBy(Order::getCustomer), Collectors.summingDouble(ord -> ord.g));
+        Map<Customer, Double> sommaOrdiniCliente = orderList.stream().
+                collect(Collectors.groupingBy(order -> order.getCustomer(),
+                        Collectors.summingDouble(ord -> ord.getProducts()
+                                .stream().mapToDouble(Product::getPrice).sum())));
+
         System.out.println("Ordine Cliente: " + ordineCliente);
         System.out.println(orderList);
+        System.out.println(" Totale : " + sommaOrdiniCliente);
 
     }
 }
